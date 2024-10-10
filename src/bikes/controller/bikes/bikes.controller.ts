@@ -1,8 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Res } from '@nestjs/common';
-import { Bikes } from 'src/bikes/entities/bikes.entity';
+
 import { BikesService } from 'src/bikes/service/bikes/bikes.service';
-import { DeleteResult, UpdateResult } from 'typeorm';
+
+
 import { Response } from 'express';
+import { CreateBikeDto } from 'src/bikes/dtos/create-bike.dto';
+import { UpdateBikeDto } from 'src/bikes/dtos/update-bike.dto';
 
 @Controller('bikes')
 export class BikesController {
@@ -34,9 +37,9 @@ export class BikesController {
   }
 
   @Post()
-  async addBike(@Body() bike: Bikes, @Res() res: Response): Promise<Response> {
+  async addBike(@Body() createBikeDto: CreateBikeDto, @Res() res: Response): Promise<Response> {
     try {
-      const newBike = await this.bikesService.addBike(bike);
+      const newBike = await this.bikesService.addBike(createBikeDto);
       return res.status(201).json(newBike);
     } catch (error) {
       console.error('Error adding a bike:', error);
@@ -45,9 +48,13 @@ export class BikesController {
   }
 
   @Put(':id')
-  async updateBike(@Param('id') id: number, @Body() bike: Bikes, @Res() res: Response): Promise<Response> {
+  async updateBike(
+    @Param('id') id: number,
+    @Body() updateBikeDto: UpdateBikeDto,
+    @Res() res: Response
+  ): Promise<Response> {
     try {
-      const result = await this.bikesService.updateBike(id, bike);
+      const result = await this.bikesService.updateBike(id, updateBikeDto);
       if (result.affected === 0) {
         return res.status(404).json({ message: 'Bike not found' });
       }

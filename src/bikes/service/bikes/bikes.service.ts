@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateBikeDto } from 'src/bikes/dtos/create-bike.dto';
+import { UpdateBikeDto } from 'src/bikes/dtos/update-bike.dto';
 import { Bikes } from 'src/bikes/entities/bikes.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
@@ -18,7 +20,7 @@ export class BikesService {
     }
   }
 
-  async addBike(bike: Bikes): Promise<Bikes> {
+  async addBike(bike: CreateBikeDto): Promise<Bikes> {
     try {
       return await this.bikesRepository.save(bike);
     } catch (error) {
@@ -40,7 +42,7 @@ export class BikesService {
     }
   }
 
-  async updateBike(id: number, bike: Bikes): Promise<UpdateResult> {
+  async updateBike(id: number, bike: UpdateBikeDto): Promise<UpdateResult> {
     try {
       return await this.bikesRepository.update(id, bike);
     } catch (error) {
