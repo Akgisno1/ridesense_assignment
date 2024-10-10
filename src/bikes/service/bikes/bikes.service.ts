@@ -5,28 +5,56 @@ import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 @Injectable()
 export class BikesService {
+  constructor(
+    @InjectRepository(Bikes) private bikesRepository: Repository<Bikes>,
+  ) {}
 
-    constructor(
-        @InjectRepository(Bikes) private BikesRepository:Repository<Bikes>,
-    ){}
-
-    async getAllBikes():Promise<Bikes[]>{
-        return await this.BikesRepository.find();
+  async getAllBikes(): Promise<Bikes[]> {
+    try {
+      return await this.bikesRepository.find();
+    } catch (error) {
+      console.error('Error in getAllBikes:', error);
+      throw error;
     }
+  }
 
-    async addBikes(bikes:Bikes):Promise<Bikes>{
-        return await this.BikesRepository.save(bikes);
+  async addBike(bike: Bikes): Promise<Bikes> {
+    try {
+      return await this.bikesRepository.save(bike);
+    } catch (error) {
+      console.error('Error in addBike:', error);
+      throw error;
     }
+  }
 
-    async getOneBikes(id:number):Promise<Bikes>{
-        return await this.BikesRepository.findOne({where:{id}});
+  async getOneBike(id: number): Promise<Bikes> {
+    try {
+      const bike = await this.bikesRepository.findOne({ where: { id } });
+      if (!bike) {
+        throw new Error(`Bike with id ${id} not found`);
+      }
+      return bike;
+    } catch (error) {
+      console.error(`Error in getOneBike for id ${id}:`, error);
+      throw error;
     }
+  }
 
-    async updateBikes(id:number,bikes:Bikes):Promise<UpdateResult>{
-        return await this.BikesRepository.update(id,bikes);
+  async updateBike(id: number, bike: Bikes): Promise<UpdateResult> {
+    try {
+      return await this.bikesRepository.update(id, bike);
+    } catch (error) {
+      console.error(`Error in updateBike for id ${id}:`, error);
+      throw error;
     }
+  }
 
-    async deleteBikes(id:number):Promise<DeleteResult>{
-        return await this.BikesRepository.delete(id);
+  async deleteBike(id: number): Promise<DeleteResult> {
+    try {
+      return await this.bikesRepository.delete(id);
+    } catch (error) {
+      console.error(`Error in deleteBike for id ${id}:`, error);
+      throw error;
     }
+  }
 }
