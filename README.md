@@ -19,12 +19,13 @@ $ npm install
 ```
 
 ## Compile and run the project
+<p>After setting up everything, start your application:</p>
 
 ```bash
-# development
 $ npm run start
-
-
+```
+## Swagger UI 
+<p>After starting your application navigate to http://localhost:3000/api in your web browser to access the Swagger UI, where you can explore and test your API endpoints.</p>
 
 
 
